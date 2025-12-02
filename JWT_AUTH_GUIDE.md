@@ -18,33 +18,33 @@ Un **JWT (JSON Web Token)** est un standard ouvert (RFC 7519) qui définit une m
 ### Structure d'un JWT
 Un JWT se compose de 3 parties séparées par des points (`.`):
 
-\`\`\`
+```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhYmMxMjM0NTY3ODkiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
 └─ Header         └─ Payload                    └─ Signature
-\`\`\`
+```
 
 #### 1. Header (En-tête)
 Contient le type de token et l'algorithme de signature utilisé.
 
-\`\`\`json
+```json
 {
   "alg": "HS256",
   "typ": "JWT"
 }
-\`\`\`
+```
 
 #### 2. Payload (Données)
 Contient les informations (claims) à transmettre. Exemple:
 
-\`\`\`json
+```json
 {
   "userId": "672abc1234567890",
   "email": "alice@example.com",
   "iat": 1702000000,
   "exp": 1702086400
 }
-\`\`\`
+```
 
 **Claims importants:**
 - `iat` (issued at): Timestamp de création
@@ -55,13 +55,13 @@ Contient les informations (claims) à transmettre. Exemple:
 #### 3. Signature
 Créée en signant les deux premières parties avec une clé secrète et l'algorithme spécifié:
 
-\`\`\`
+```
 HMACSHA256(
   base64UrlEncode(header) + "." +
   base64UrlEncode(payload),
   secret
 )
-\`\`\`
+```
 
 **Avantage**: La signature garantit que le token n'a pas été modifié.
 
@@ -71,7 +71,7 @@ HMACSHA256(
 
 ### Schéma du Flux
 
-\`\`\`
+```
 ┌─────────────┐          Credentials           ┌─────────────┐
 │   Client    │─────────────────────────────→  │   Backend   │
 │   React     │                                 │  Express    │
@@ -89,7 +89,7 @@ HMACSHA256(
       ↑                                                │
       │         Protected Data (User info)           │
       └────────────────────────────────────────────────┘
-\`\`\`
+```
 
 ### Types de Routes
 
@@ -110,7 +110,7 @@ HMACSHA256(
 
 **Fichier: `src/utils/axios.ts`**
 
-\`\`\`typescript
+```typescript
 import axios from "axios"
 
 const axiosInstance = axios.create({
@@ -130,7 +130,7 @@ axiosInstance.interceptors.request.use(
 )
 
 export default axiosInstance
-\`\`\`
+```
 
 **Fonctionnement:**
 - Avant chaque requête, le token est récupéré de localStorage
@@ -143,7 +143,7 @@ export default axiosInstance
 
 Le Context API gère l'état global d'authentification:
 
-\`\`\`typescript
+```typescript
 interface AuthContextType {
   user: User | null           // Utilisateur connecté
   token: string | null        // JWT token
@@ -153,12 +153,12 @@ interface AuthContextType {
   logout: () => void
   isAuthenticated: boolean    // boolean pour vérifier l'authentification
 }
-\`\`\`
+```
 
 **Méthodes principales:**
 
 #### `login(email, password)`
-\`\`\`typescript
+```typescript
 const login = async (email: string, password: string) => {
   const response = await axiosInstance.post("/auth/login", { email, password })
   const { token, user } = response.data
@@ -171,26 +171,26 @@ const login = async (email: string, password: string) => {
   setToken(token)
   setUser(user)
 }
-\`\`\`
+```
 
 #### `register(username, email, password)`
 Crée un nouvel utilisateur et retourne automatiquement un token.
 
 #### `logout()`
-\`\`\`typescript
+```typescript
 const logout = () => {
   setUser(null)
   setToken(null)
   localStorage.removeItem("token")
   localStorage.removeItem("user")
 }
-\`\`\`
+```
 
 ### 3. Routes Protégées
 
 **Fichier: `src/components/ProtectedRoute.tsx`**
 
-\`\`\`typescript
+```typescript
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
@@ -205,7 +205,7 @@ function ProtectedRoute({ children }) {
   
   return children
 }
-\`\`\`
+```
 
 **Comportement:**
 - Vérifie si l'utilisateur a un token valide
@@ -216,7 +216,7 @@ function ProtectedRoute({ children }) {
 
 **Exemple dans une page:**
 
-\`\`\`typescript
+```typescript
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 
@@ -237,7 +237,7 @@ function Profile() {
     </div>
   )
 }
-\`\`\`
+```
 
 ---
 
@@ -245,16 +245,16 @@ function Profile() {
 
 ### 1. Dépendances Requises
 
-\`\`\`bash
+```bash
 npm install bcryptjs jsonwebtoken
 npm install --save-dev @types/jsonwebtoken
-\`\`\`
+```
 
 ### 2. Modèle User avec Password
 
 **Fichier: `models/User.js`**
 
-\`\`\`javascript
+```javascript
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -276,7 +276,7 @@ const userSchema = new mongoose.Schema({
     ref: 'Course'
   }]
 }, { timestamps: true })
-\`\`\`
+```
 
 ### 3. Routes d'Authentification
 
@@ -284,7 +284,7 @@ const userSchema = new mongoose.Schema({
 
 #### Route Register
 
-\`\`\`javascript
+```javascript
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body
@@ -324,11 +324,11 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
-\`\`\`
+```
 
 #### Route Login
 
-\`\`\`javascript
+```javascript
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
@@ -368,13 +368,13 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
-\`\`\`
+```
 
 ### 4. Middleware de Protection
 
 **Fichier: `middleware/authMiddleware.js`**
 
-\`\`\`javascript
+```javascript
 const jwt = require('jsonwebtoken')
 
 const protect = (req, res, next) => {
@@ -407,11 +407,11 @@ const protect = (req, res, next) => {
 }
 
 module.exports = { protect }
-\`\`\`
+```
 
 ### 5. Utilisation du Middleware
 
-\`\`\`javascript
+```javascript
 const { protect } = require('../middleware/authMiddleware')
 
 // Route publique
@@ -425,18 +425,18 @@ router.get('/profile', protect, async (req, res) => {
   const user = await User.findById(req.userId).select('-password')
   res.json(user)
 })
-\`\`\`
+```
 
 ### 6. Variables d'Environnement
 
 **Fichier: `.env`**
 
-\`\`\`env
+```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/eduplatform
 JWT_SECRET=votre_secret_super_securise_ici_changez_le
 NODE_ENV=development
-\`\`\`
+```
 
 ⚠️ **Important**: Changez le `JWT_SECRET` en production et gardez-le secret!
 
@@ -446,7 +446,7 @@ NODE_ENV=development
 
 ### Étape 1: Inscription
 
-\`\`\`
+```
 Utilisateur
     ↓
 [Page Register] → Saisit username, email, password
@@ -465,11 +465,11 @@ Retourner { token, user }
   - Sauvegarder token en localStorage
   - Mettre à jour AuthContext
   - Rediriger vers /courses
-\`\`\`
+```
 
 ### Étape 2: Connexion
 
-\`\`\`
+```
 Utilisateur
     ↓
 [Page Login] → Saisit email, password
@@ -487,11 +487,11 @@ Retourner { token, user }
   - Sauvegarder token en localStorage
   - Mettre à jour AuthContext
   - Rediriger vers page protégée
-\`\`\`
+```
 
 ### Étape 3: Requête Authentifiée
 
-\`\`\`
+```
 Utilisateur clique sur "Mon Profil"
     ↓
 [Frontend] GET /api/user/profile
@@ -509,18 +509,18 @@ Route protégée accède à req.userId
   - Retourner les données
     ↓
 [Frontend] Afficher les données utilisateur
-\`\`\`
+```
 
 ### Étape 4: Déconnexion
 
-\`\`\`
+```
 Utilisateur clique sur "Déconnexion"
     ↓
 [Frontend]
   - Supprimer token de localStorage
   - Vider AuthContext
   - Rediriger vers /login
-\`\`\`
+```
 
 ---
 
@@ -529,9 +529,9 @@ Utilisateur clique sur "Déconnexion"
 ### 1. Stockage du Token
 
 ✅ **Recommandé**: localStorage (pour SPA)
-\`\`\`javascript
+```javascript
 localStorage.setItem('token', token)
-\`\`\`
+```
 
 ⚠️ **Considérations**: 
 - localStorage est vulnérable au XSS (Cross-Site Scripting)
@@ -546,41 +546,41 @@ localStorage.setItem('token', token)
 
 **Recommandation**: Entre 1h et 7 jours selon le contexte
 
-\`\`\`javascript
+```javascript
 // Token court terme (1 heure)
 jwt.sign(payload, secret, { expiresIn: '1h' })
 
 // Token long terme (7 jours)
 jwt.sign(payload, secret, { expiresIn: '7d' })
-\`\`\`
+```
 
 ### 3. Refresh Token (Optionnel)
 
 Pour une meilleure sécurité:
 
-\`\`\`javascript
+```javascript
 // Générer 2 tokens
 const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' })
 const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: '7d' })
 
 // Client: Quand accessToken expire, utiliser refreshToken pour en obtenir un nouveau
-\`\`\`
+```
 
 ### 4. Mot de Passe Sécurisé
 
 Toujours hasher avec bcrypt:
 
-\`\`\`javascript
+```javascript
 // ✅ Correct
 const hashedPassword = await bcrypt.hash(password, 10)
 
 // ❌ Jamais faire ça
 const hashedPassword = password // DANGEREUX!
-\`\`\`
+```
 
 ### 5. Secrets Sécurisés
 
-\`\`\`env
+```env
 # ✅ Bon secret (aléatoire, long, unique)
 JWT_SECRET=aX9dKmL2pQ7rTvWxYzAb3CdEfGhIjKlMnOpQrStUvWxYz
 
@@ -588,13 +588,13 @@ JWT_SECRET=aX9dKmL2pQ7rTvWxYzAb3CdEfGhIjKlMnOpQrStUvWxYz
 JWT_SECRET=password
 JWT_SECRET=secret123
 JWT_SECRET=votre_secret_super_securise_ici_changez_le
-\`\`\`
+```
 
 ### 6. Validation des Données
 
 Toujours valider côté backend:
 
-\`\`\`javascript
+```javascript
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
   
@@ -610,7 +610,7 @@ router.post('/login', async (req, res) => {
   
   // Continuer...
 })
-\`\`\`
+```
 
 ### 7. HTTPS en Production
 
@@ -621,7 +621,7 @@ router.post('/login', async (req, res) => {
 
 Limiter les tentatives de login:
 
-\`\`\`javascript
+```javascript
 const rateLimit = require('express-rate-limit')
 
 const limiter = rateLimit({
@@ -632,7 +632,7 @@ const limiter = rateLimit({
 router.post('/login', limiter, async (req, res) => {
   // ...
 })
-\`\`\`
+```
 
 ---
 

@@ -1,61 +1,206 @@
-# Livrable: MERN Week 9 - React Router & Authentification JWT
+# Projet MERN - Gestion de Cours avec Authentification
 
 **Échéance**: Avant 00:00 aujourd'hui  
 **Matière**: Cours MERN - Semaine 9  
-**Professeurs**: Abdelweheb GUEDDES & Mohamed Ben Jazia / Ecole Polytechnique Sousse
+**Professeurs**: Abdelweheb GUEDDES & Mohamed Ben Jazia  
+**École**: Ecole Polytechnique Sousse
 
 ---
 
-## Contenu du Livrable
+## 📋 Contenu du Projet
 
-Ce projet contient tous les éléments requis pour la semaine 9:
+### Fonctionnalités Implémentées
 
-- ✅ Code frontend React complet
-- ✅ Code backend Node.js/Express avec authentification JWT
-- ✅ README avec instructions de démarrage
-- ✅ Captures d'écran de toutes les pages
-- ✅ Fichier `.env.example`
-- ✅ Guide complet JWT
+#### Frontend (React)
+- ✅ Système d'authentification complet (Inscription/Connexion)
+- ✅ Gestion des cours avec pagination
+- ✅ Système de reviews et évaluations
+- ✅ Profil utilisateur avec édition
+- ✅ Page "Mes Reviews" personnalisée
+- ✅ Barre de recherche pour les cours
+- ✅ Gestion des erreurs et page 404
+
+#### Backend (Node.js/Express)
+- ✅ API RESTful sécurisée
+- ✅ Authentification JWT
+- ✅ Validation des données
+- ✅ Gestion des fichiers (images de profil)
+- ✅ Sécurité renforcée (helmet, rate limiting)
 
 ---
 
-## Structure du Projet
+## 🚀 Fonctionnalités à Implémenter
 
-\`\`\`
-┌─ Frontend (React Router SPA)
-│  ├─ src/
-│  │  ├─ context/AuthContext.tsx      # Gestion globale de l'authentification
-│  │  ├─ utils/axios.ts              # Configuration Axios avec JWT
-│  │  ├─ components/
-│  │  │  ├─ Navbar.tsx              # Navigation avec liens
-│  │  │  └─ ProtectedRoute.tsx       # Routes protégées
-│  │  ├─ pages/
-│  │  │  ├─ Home.tsx                # Page d'accueil
-│  │  │  ├─ Login.tsx               # Connexion
-│  │  │  ├─ Register.tsx            # Inscription
-│  │  │  ├─ Courses.tsx             # Liste des cours (avec search & pagination)
-│  │  │  ├─ CourseDetails.tsx       # Détails du cours (avec reviews)
-│  │  │  ├─ Profile.tsx             # Profil utilisateur
-│  │  │  ├─ EditProfile.tsx         # Édition du profil
-│  │  │  ├─ MyReviews.tsx           # Mes reviews
-│  │  │  └─ NotFound.tsx            # Page 404
-│  │  ├─ App.tsx                     # Routes principales
-│  │  └─ main.tsx                    # Point d'entrée
-│
-├─ Backend (Express.js)
-│  ├─ models/
-│  │  ├─ User.js                    # Modèle utilisateur avec password
-│  │  ├─ Course.js                  # Modèle cours
-│  │  └─ Review.js                  # Modèle reviews
-│  ├─ routes/
-│  │  ├─ authRoutes.js              # Routes /auth/login, /auth/register
-│  │  ├─ courseRoutes.js            # Routes des cours
-│  │  └─ userRoutes.js              # Routes utilisateur (protégées)
-│  ├─ middleware/
-│  │  └─ authMiddleware.js          # Validation JWT (protect)
-│  ├─ server.js                      # Serveur principal
-│  └─ .env                           # Variables d'environnement
-\`\`\`
+1. **Page "Mes Reviews"**
+   - Liste complète des critiques de l'utilisateur connecté
+   - Fonctionnalité de tri et de filtrage
+   - ![Capture d'écran Mes Reviews](/screenshots/my-reviews.png)
+
+2. **Formulaire d'ajout de review**
+   - Depuis la page des détails d'un cours
+   - Notation par étoiles
+   - Champ de texte pour le commentaire
+   - ![Capture d'écran Formulaire Review](/screenshots/add-review.png)
+
+3. **Édition du profil**
+   - Mise à jour de la bio
+   - Lien vers le site web personnel
+   - Téléchargement de photo de profil
+   - ![Capture d'écran Édition Profil](/screenshots/edit-profile.png)
+
+4. **Pagination des cours**
+   - Affichage de 10 cours par page
+   - Navigation entre les pages
+   - Compteur de résultats
+   - ![Capture d'écran Pagination](/screenshots/pagination.png)
+
+5. **Recherche de cours**
+   - Barre de recherche en temps réel
+   - Filtrage par titre et catégorie
+   - ![Capture d'écran Recherche](/screenshots/search.png)
+
+6. **Page 404**
+   - Design convivial pour les pages non trouvées
+   - Lien de retour à l'accueil
+   - ![Capture d'écran 404](/screenshots/not-found.png)
+
+---
+
+## Installation
+
+1. Cloner le dépôt
+```bash
+git clone https://github.com/RaefGaied/Projet_Avance_React.git
+cd Projet_Avance_React
+```
+
+2. Installer les dépendances (frontend & backend)
+```bash
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+```
+
+3. Configurer les variables d'environnement
+```bash
+# Créer un fichier .env dans le dossier backend
+cp .env.example .env
+# Puis éditer les valeurs selon votre configuration
+```
+
+4. Démarrer les serveurs
+```bash
+# Backend (depuis le dossier backend)
+npm run dev
+
+# Frontend (depuis le dossier frontend)
+npm run dev
+```
+
+---
+
+## Points Clés d'Implémentation
+
+### React Router
+```jsx
+<BrowserRouter>
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/login" element={<Login />} />
+    <Route element={<ProtectedRoute />}>
+      <Route path="/profile" element={<Profile />} />
+    </Route>
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+</BrowserRouter>
+```
+
+### Authentification JWT
+```javascript
+// Backend - Middleware d'authentification
+const auth = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) return res.status(401).json({ message: 'Accès non autorisé' });
+  
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Token invalide' });
+  }
+};
+```
+
+### Sécurité
+- Mots de passe hashés avec bcrypt
+- JWT avec expiration
+- Protection contre les attaques XSS et CSRF
+- Rate limiting
+- Refresh tokens
+
+---
+
+## Ressources Utiles
+
+- Documentation React Router
+- JWT Official Documentation
+- Axios Documentation
+- Bcrypt.js
+- MongoDB Atlas
+
+---
+
+## Notes d'Implémentation
+
+### 5 Points Importants à Retenir
+
+1. **React Router**
+   - `<BrowserRouter>` entoure toute l'application
+   - `<Routes>` et `<Route>` définissent les chemins
+   - `<Link>` pour la navigation (remplace `<a>`)
+   - `useNavigate()` pour redirection programmatique
+   - `useParams()` pour récupérer les paramètres d'URL
+
+2. **JWT et Authentification**
+   - Token stocké dans localStorage
+   - Envoyé dans le header `Authorization: Bearer TOKEN`
+   - Middleware backend pour vérifier le token
+   - Context React pour partager l'état d'authentification
+   - Routes protégées redirigent vers /login si non connecté
+
+3. **Sécurité**
+   - Ne JAMAIS stocker de données sensibles dans le token
+   - Hasher les mots de passe avec bcrypt
+   - Utiliser HTTPS en production
+   - Définir une date d'expiration au token
+   - Utiliser des secrets forts pour JWT_SECRET
+
+---
+
+## Évaluation
+
+Ce travail compte pour 30% de la note finale du module.
+
+### Critères d'évaluation :
+- **Fonctionnalités implémentées** (40%)
+- **Qualité du code** (30%)
+- **Sécurité** (20%)
+- **Documentation** (10%)
+
+---
+
+## Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
+
+## Licence
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ---
 
@@ -63,7 +208,7 @@ Ce projet contient tous les éléments requis pour la semaine 9:
 
 ### Backend
 
-\`\`\`bash
+```bash
 # 1. Naviguer dans le dossier backend
 cd backend
 
@@ -81,11 +226,11 @@ cp .env.example .env
 # 5. Démarrer le serveur
 npm run dev
 # Serveur disponible à: http://localhost:5000
-\`\`\`
+```
 
 ### Frontend
 
-\`\`\`bash
+```bash
 # 1. Naviguer dans le dossier frontend
 cd frontend
 
@@ -95,7 +240,7 @@ npm install
 # 3. Démarrer l'application React
 npm run dev
 # Application disponible à: http://localhost:5173
-\`\`\`
+```
 
 ---
 
@@ -111,10 +256,8 @@ npm run dev
 - Accessible à tous (non authentifié)
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Home page]
 [Avec: Logo, description, boutons CTA]
-\`\`\`
 
 ---
 
@@ -135,10 +278,8 @@ npm run dev
 - `password`: Mot de passe (min 6 caractères)
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Register form]
 [Avec: Formulaire, boutons, messages d'erreur/succès]
-\`\`\`
 
 **Résultat attendu**:
 - Utilisateur créé en base de données
@@ -162,10 +303,8 @@ npm run dev
 - `password`: Mot de passe associé
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Login form]
 [Avec: Formulaire, boutons, messages]
-\`\`\`
 
 **Résultat attendu**:
 - Utilisateur identifié
@@ -208,10 +347,8 @@ npm run dev
      - Bouton "Voir les détails"
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Courses page]
 [Avec: Barre de recherche, grille de cours, pagination]
-\`\`\`
 
 ---
 
@@ -247,10 +384,8 @@ npm run dev
    - Tri par date décroissante (plus récentes en premier)
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Course details page]
 [Avec: Informations du cours, formulaire de review, liste des reviews]
-\`\`\`
 
 **Résultat attendu**:
 - Review ajoutée à la base de données
@@ -282,10 +417,8 @@ npm run dev
 - Liste des cours enregistrés
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Profile page]
 [Avec: Informations utilisateur, liste des cours, boutons]
-\`\`\`
 
 ---
 
@@ -306,10 +439,8 @@ npm run dev
 - `website`: URL (format URL valide)
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Edit profile form]
 [Avec: Formulaire, compteur de caractères, boutons]
-\`\`\`
 
 **Résultat attendu**:
 - Profil mis à jour en base de données
@@ -338,10 +469,8 @@ npm run dev
 - Si aucune review: Message "Vous n'avez pas encore écrit de reviews"
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: My reviews page]
 [Avec: Liste des reviews, boutons de suppression]
-\`\`\`
 
 ---
 
@@ -356,10 +485,8 @@ npm run dev
 - Lien vers la liste des cours
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: 404 page]
 [Avec: Message d'erreur, liens de navigation]
-\`\`\`
 
 ---
 
@@ -386,10 +513,8 @@ npm run dev
   - "Déconnexion"
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Insérer screenshot: Navbar - Non authentifié]
 [Insérer screenshot: Navbar - Authentifié avec dropdown]
-\`\`\`
 
 ---
 
@@ -397,73 +522,63 @@ npm run dev
 
 ### 1. Authentification JWT
 
-✅ Tester:
+Tester:
 - Créer un nouvel utilisateur (Register)
 - Se connecter (Login)
 - Vérifier que le token est stocké en localStorage (DevTools → Storage → localStorage)
 - Token format: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [DevTools montrant le token dans localStorage]
-\`\`\`
 
 ### 2. Routes Protégées
 
-✅ Tester:
+Tester:
 - Sans authentification: Accéder à `/profile` redirige vers `/login`
 - Avec authentification: `/profile` affiche les données de l'utilisateur
 - Même chose pour `/my-reviews`, `/profile/edit`
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Redirection de /profile vers /login - non authentifié]
 [/profile accessible - authentifié]
-\`\`\`
 
 ### 3. Pagination et Recherche
 
-✅ Tester:
+Tester:
 - Liste des cours affiche max 10 par page
 - Boutons Précédent/Suivant fonctionnels
 - Barre de recherche filtre par titre
 - Après recherche, retour à page 1
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Page 1 des cours]
 [Page 2 des cours]
 [Résultats de recherche]
-\`\`\`
 
 ### 4. Formulaire de Review
 
-✅ Tester:
+Tester:
 - Ajouter une review sur un cours
 - Review visible immédiatement
 - Liste complète des reviews dans "Mes Reviews"
 - Notation avec étoiles fonctionne
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Formulaire de review vide]
 [Review soumise et affichée]
 [Page "Mes Reviews" avec la nouvelle review]
-\`\`\`
 
 ### 5. Édition du Profil
 
-✅ Tester:
+Tester:
 - Modifier la bio (avec compteur de caractères)
 - Modifier le website
 - Sauvegarder et voir les changements dans `/profile`
 
 **Capture d'écran à insérer ici**
-\`\`\`
 [Formulaire d'édition du profil]
 [Compteur de caractères]
 [Profil mis à jour]
-\`\`\`
 
 ---
 
@@ -473,7 +588,7 @@ npm run dev
 
 Créer un fichier `.env` à la racine du backend:
 
-\`\`\`env
+```env
 # Serveur
 PORT=5000
 NODE_ENV=development
@@ -486,6 +601,7 @@ JWT_SECRET=votre_secret_super_securise_ici_changez_le
 
 # CORS
 CORS_ORIGIN=http://localhost:5173
+```
 \`\`\`
 
 ### Frontend (.env)
