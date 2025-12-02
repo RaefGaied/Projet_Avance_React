@@ -1,10 +1,5 @@
 # Projet MERN - Gestion de Cours avec Authentification
 
-**Échéance**: Avant 00:00 aujourd'hui  
-**Matière**: Cours MERN - Semaine 9  
-**Professeurs**: Abdelweheb GUEDDES & Mohamed Ben Jazia / Ecole Polytechnique Sousse
-
----
 
 ## 📋 Contenu du Projet
 
@@ -593,10 +588,12 @@ PORT=5000
 NODE_ENV=development
 
 # Database
-MONGO_URI=mongodb://localhost:27017/eduplatform
+MONGODB_URI=mongodb://localhost:27017/DB_ProjetAvance
 
 # JWT
 JWT_SECRET=votre_secret_super_securise_ici_changez_le
+dans mon projet :
+JWT_SECRET=9tVwE0QrvcBOu2ADw7jBSe4ESPd6U4YW
 
 # CORS
 CORS_ORIGIN=http://localhost:5173
@@ -607,9 +604,9 @@ CORS_ORIGIN=http://localhost:5173
 
 Généralement pas nécessaire pour cette app, mais si besoin:
 
-\`\`\`env
+```env
 VITE_API_URL=http://localhost:5000/api
-\`\`\`
+```
 
 ---
 
@@ -617,29 +614,29 @@ VITE_API_URL=http://localhost:5000/api
 
 ### 1. Flux d'Inscription
 
-\`\`\`
+```
 Utilisateur → Register form → POST /api/auth/register
 → Backend: Hash password, create user, generate JWT
 → Retour: { token, user }
 → Frontend: localStorage.setItem('token', token)
 → AuthContext mise à jour
 → Redirection vers /courses
-\`\`\`
+```
 
 ### 2. Flux de Connexion
 
-\`\`\`
+```
 Utilisateur → Login form → POST /api/auth/login
 → Backend: Vérifier password, generate JWT
 → Retour: { token, user }
 → Frontend: localStorage.setItem('token', token)
 → AuthContext mise à jour
 → Redirection vers /courses
-\`\`\`
+```
 
 ### 3. Flux d'Accès à Route Protégée
 
-\`\`\`
+```
 Utilisateur → Clique sur /profile
 → ProtectedRoute: Vérifie if (token && isAuthenticated)
   → Si non: Redirige vers /login
@@ -649,11 +646,11 @@ Utilisateur → Clique sur /profile
 → Backend middleware: Valide JWT, extrait userId
 → Route retourne les données utilisateur
 → Frontend affiche le profil
-\`\`\`
+```
 
 ### 4. Flux d'Ajout de Review
 
-\`\`\`
+```
 Utilisateur → CourseDetails → Remplit le formulaire
 → POST /api/reviews (avec authorization header)
 → Backend: Valide JWT, récupère userId
@@ -661,7 +658,7 @@ Utilisateur → CourseDetails → Remplit le formulaire
 → Retour: { review }
 → Frontend: Affiche la review immédiatement
 → Ajoute à la liste des reviews
-\`\`\`
+```
 
 ---
 
@@ -714,7 +711,7 @@ Utilisateur → CourseDetails → Remplit le formulaire
 
 Créer un fichier ZIP contenant:
 
-\`\`\`
+```
 livrable-mern-week9/
 ├── frontend/                    # Code React complet
 ├── backend/                     # Code Express complet
@@ -736,7 +733,7 @@ livrable-mern-week9/
     ├── 12-not-found.png
     ├── 13-navbar-logged-out.png
     └── 14-navbar-logged-in.png
-\`\`\`
+```
 
 ---
 
