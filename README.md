@@ -2,8 +2,7 @@
 
 **Échéance**: Avant 00:00 aujourd'hui  
 **Matière**: Cours MERN - Semaine 9  
-**Professeurs**: Abdelweheb GUEDDES & Mohamed Ben Jazia  
-**École**: Ecole Polytechnique Sousse
+**Professeurs**: Abdelweheb GUEDDES & Mohamed Ben Jazia / Ecole Polytechnique Sousse
 
 ---
 
