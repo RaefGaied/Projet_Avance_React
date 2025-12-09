@@ -43,8 +43,7 @@ exports.getCourseReviews = async (req, res) => {
   try {
     const reviews = await Review.find({ course: req.params.courseId })
       .populate('user', 'username email')
-      .sort({ createdAt: -1 }); // Trier du plus récent au plus ancien
-
+      .sort({ createdAt: -1 }); 
     res.json(reviews);
   } catch (error) {
     console.error('Erreur récupération reviews cours:', error);
@@ -58,7 +57,7 @@ exports.getCourseReviews = async (req, res) => {
     const userId = req.params.userId;
     console.log('🔍 Fetching reviews for user ID:', userId);
 
-    // Récupère tous les avis de l'utilisateur
+  
     const reviews = await Review.find({ user: userId })
       .populate('course', 'title instructor')
       .populate('user', 'username email')
