@@ -78,12 +78,12 @@
 5. **Recherche de cours**
    - Barre de recherche en temps réel
    - Filtrage par titre et catégorie
-   - ![Capture d'écran Recherche](/screenshots/search.png)
+   - ![Capture d'écran Recherche](/screenshots/06-courses-search.png)
 
 6. **Page 404**
    - Design convivial pour les pages non trouvées
    - Lien de retour à l'accueil
-   - ![Capture d'écran 404](/screenshots/not-found.png)
+   - ![Capture d'écran 404](/screenshots/12-not-found.png)
 
 ---
 

@@ -8,15 +8,14 @@ const profileRoutes = require("./routes/profileRoutes")
 const courseRoutes = require("./routes/courseRoutes")
 const reviewRoutes = require("./routes/reviewRoutes")
 const authRoutes = require("./routes/authRoutes")
-const aiRoutes = require("./routes/aiRoutes")
+
 
 
 const app = express()
 
-// Parse JSON bodies
+
 app.use(express.json())
 
-// Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }))
 
 // CORS configuration
@@ -26,16 +25,15 @@ app.use(cors({
   allowedHeaders: "Content-Type,Authorization"
 }))
 
-// CONNECTION BDD
+
 connectDB()
 
-// ROUTES API
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/profiles", profileRoutes)
 app.use("/api/courses", courseRoutes)
 app.use("/api/reviews", reviewRoutes)
-app.use("/api/ai", aiRoutes)
+
 
 app.get("/", (req, res) => {
   res.send("Bienvenue sur la plateforme ")
